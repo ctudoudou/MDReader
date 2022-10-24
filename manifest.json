@@ -27,6 +27,7 @@
         "js/turndown.js",
         "js/xregexp-all.js",
         "js/jszip.min.js",
+        "js/download.js",
         "js/FileSaver.min.js"
       ]
     }
