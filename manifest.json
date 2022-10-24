@@ -1,0 +1,34 @@
+{
+  "name": "MDReader",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "Reader by Markdown parser.",
+  "action": {
+    "default_icon": {
+      "8": "images/icon32.jpg",
+      "16": "images/icon32.jpg",
+      "32": "images/icon32.jpg",
+      "64": "images/icon32.jpg",
+      "128": "images/icon32.jpg",
+      "256": "images/icon32.jpg"
+    },
+    "default_title": "Click Me",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["contextMenus"],
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "js/Readability.js",
+        "js/turndown.js",
+        "js/xregexp-all.js",
+        "js/jszip.min.js",
+        "js/FileSaver.min.js"
+      ]
+    }
+  ]
+}
