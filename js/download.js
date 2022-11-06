@@ -1,4 +1,8 @@
 function download() {
+  function addSource(markdown) {
+    return `# ${document.title}\n>\n> [${document.URL}](${document.URL})\n>\n\n${markdown}`;
+  }
+
   var documentClone = document.cloneNode(true);
   let reader = new Readability(documentClone);
   let article = reader.parse();
@@ -9,7 +13,6 @@ function download() {
   urls = XRegExp.matchChain(markdown, [
     { regex: /\!\[\]\(([^"]+?)\)/i, backref: 1 },
   ]);
-  console.log(urls);
 
   var zip = new JSZip();
 
@@ -23,9 +26,8 @@ function download() {
         markdown = markdown.replace(urls[i], `images/${i}`);
         zip.file(`images/${i}`, blobs[i]);
       }
-      // console.log(blobs);
 
-      zip.file("index.md", markdown);
+      zip.file("index.md", addSource(markdown));
 
       zip.generateAsync({ type: "blob" }).then(function (content) {
         saveAs(content, `${title}.zip`);
@@ -34,7 +36,6 @@ function download() {
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(request, sender, sendResponse);
   if (request.msg === "SaveAsMarkdown") {
     download();
   }
