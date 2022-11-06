@@ -2,11 +2,9 @@ function download() {
   var documentClone = document.cloneNode(true);
   let reader = new Readability(documentClone);
   let article = reader.parse();
-  console.log(article);
 
   var turndownService = new TurndownService();
   var markdown = turndownService.turndown(article.content);
-  // console.log(markdown);
 
   urls = XRegExp.matchChain(markdown, [
     { regex: /\!\[\]\(([^"]+?)\)/i, backref: 1 },
@@ -14,6 +12,9 @@ function download() {
   console.log(urls);
 
   var zip = new JSZip();
+
+  // get title
+  title = document.title;
 
   Promise.all(urls.map((u) => fetch(u)))
     .then((responses) => Promise.all(responses.map((res) => res.blob())))
@@ -27,7 +28,7 @@ function download() {
       zip.file("index.md", markdown);
 
       zip.generateAsync({ type: "blob" }).then(function (content) {
-        saveAs(content, "example.zip");
+        saveAs(content, `${title}.zip`);
       });
     });
 }
